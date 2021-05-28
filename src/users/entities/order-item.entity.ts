@@ -1,38 +1,41 @@
 /* eslint-disable prettier/prettier */
+import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-
-import { Product } from './product.entity';
+import { Order } from './order.entity';
 
 @Entity()
-export class Category {
+export class OrderItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  name: string;
-
   @CreateDateColumn({
     type: 'timestamp',
-    precision: null,
     default: () => 'CURRENT_TIMESTAMP',
+    precision: null,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
-    precision: null,
-    onUpdate: 'CURRENT_TIMESTAMP',
     default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+    precision: null,
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Product, (product) => product.categories)
-  products: Product[];
+  @Column({ type: 'int' })
+  quantity: number;
+
+  @ManyToOne(() => Product)
+  product: Product;
+
+  @ManyToOne(() => Order, (order) => order.items)
+  order: OrderItem;
 }
