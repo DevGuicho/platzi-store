@@ -17,4 +17,8 @@ export class AppController {
   getRuta(): string {
     return '<h1>Holas nest</h1>';
   }
+  @Get('/tasks')
+  getTasks() {
+    return this.appService.getTasks();
+  }
 }

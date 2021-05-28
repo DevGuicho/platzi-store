@@ -17,30 +17,45 @@ export class CustomerController {
   constructor(private customersService: CustomersService) {}
 
   @Get()
-  findAll() {
-    return this.customersService.findAll();
+  async findAll() {
+    return {
+      message: 'Customers listed',
+      data: await this.customersService.findAll(),
+    };
   }
 
   @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.customersService.findOne(id);
+  async get(@Param('id', ParseIntPipe) id: number) {
+    return {
+      message: 'Customer retrieved',
+      data: await this.customersService.findOne(id),
+    };
   }
 
   @Post()
-  create(@Body() payload: CreateCustomerDto) {
-    return this.customersService.create(payload);
+  async create(@Body() payload: CreateCustomerDto) {
+    return {
+      message: 'Customer created',
+      data: await this.customersService.create(payload),
+    };
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateCustomerDto,
   ) {
-    return this.customersService.update(id, payload);
+    return {
+      message: 'Customer updated',
+      data: await this.customersService.update(id, payload),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.customersService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.customersService.remove(id);
+    return {
+      message: 'Customer deleted',
+    };
   }
 }

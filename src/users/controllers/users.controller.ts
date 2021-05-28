@@ -17,13 +17,19 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    return {
+      message: 'Users listed',
+      data: await this.usersService.findAll(),
+    };
   }
 
   @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
+  async get(@Param('id', ParseIntPipe) id: number) {
+    return {
+      message: 'User retrieved',
+      data: await this.usersService.findOne(id),
+    };
   }
   @Get(':id/orders')
   getOrders(@Param('id', ParseIntPipe) id: number) {
@@ -31,20 +37,29 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() payload: CreateUserDto) {
-    return this.usersService.create(payload);
+  async create(@Body() payload: CreateUserDto) {
+    return {
+      message: 'User created',
+      data: await this.usersService.create(payload),
+    };
   }
 
-  @Put(':id')
-  update(
+  @Put('/:id')
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateUserDto,
   ) {
-    return this.usersService.update(id, payload);
+    return {
+      message: 'User updated',
+      data: await this.usersService.update(id, payload),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.usersService.remove(id);
+    return {
+      message: 'User deleted',
+    };
   }
 }

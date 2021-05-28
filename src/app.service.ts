@@ -14,4 +14,7 @@ export class AppService {
     const dbName = this.configService.database.name;
     return `Hello World ${apiKey} ${dbName}`;
   }
+  getTasks() {
+    return { hola: 'mundo' };
+  }
 }

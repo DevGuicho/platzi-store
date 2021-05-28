@@ -19,30 +19,45 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Get()
-  findAll() {
-    return this.categoriesService.findAll();
+  async findAll() {
+    return await {
+      message: 'Categories listed',
+      data: await this.categoriesService.findAll(),
+    };
   }
 
   @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriesService.findOne(id);
+  async get(@Param('id', ParseIntPipe) id: number) {
+    return {
+      message: 'Category retrieved',
+      data: await this.categoriesService.findOne(id),
+    };
   }
 
   @Post()
-  create(@Body() payload: CreateCategoryDto) {
-    return this.categoriesService.create(payload);
+  async create(@Body() payload: CreateCategoryDto) {
+    return {
+      message: 'Category created',
+      data: await this.categoriesService.create(payload),
+    };
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateCategoryDto,
   ) {
-    return this.categoriesService.update(id, payload);
+    return {
+      message: 'Category updated',
+      data: await this.categoriesService.update(id, payload),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriesService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return {
+      message: 'CAtegory deleted',
+      data: await this.categoriesService.remove(id),
+    };
   }
 }

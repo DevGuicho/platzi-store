@@ -19,18 +19,27 @@ export class BrandsController {
   constructor(private brandsService: BrandsService) {}
 
   @Get()
-  findAll() {
-    return this.brandsService.findAll();
+  async findAll() {
+    return {
+      message: 'Brands listed',
+      data: await this.brandsService.findAll(),
+    };
   }
 
   @Get(':id')
-  get(@Param('id', ParseIntPipe) id: number) {
-    return this.brandsService.findOne(id);
+  async get(@Param('id', ParseIntPipe) id: number) {
+    return {
+      message: 'Brand retrieved',
+      data: await this.brandsService.findOne(id),
+    };
   }
 
   @Post()
-  create(@Body() payload: CreateBrandDto) {
-    return this.brandsService.create(payload);
+  async create(@Body() payload: CreateBrandDto) {
+    return {
+      message: 'Brand created',
+      data: await this.brandsService.create(payload),
+    };
   }
 
   @Put(':id')

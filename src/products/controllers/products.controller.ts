@@ -25,18 +25,18 @@ export class ProductsController {
   constructor(private productService: ProductsService) {}
   @Get()
   @ApiOperation({ summary: 'List of products' })
-  getProducts(@Query('limit') limit = 100, @Query('offset') offset = 0) {
+  async getProducts(@Query('limit') limit = 100, @Query('offset') offset = 0) {
     return {
       message: 'Products listed',
-      data: this.productService.findAll(),
+      data: await this.productService.findAll(),
     };
   }
   @Get('/:id')
   @HttpCode(HttpStatus.ACCEPTED)
-  getProduct(@Param('id', ParseIntPipe) id: number) {
+  async getProduct(@Param('id', ParseIntPipe) id: number) {
     return {
       message: 'Product retrieved',
-      data: this.productService.findOne(id),
+      data: await this.productService.findOne(id),
     };
   }
   @Get('/filter')
@@ -47,25 +47,25 @@ export class ProductsController {
     };
   }
   @Post()
-  create(@Body() payload: CreateProductDto) {
+  async create(@Body() payload: CreateProductDto) {
     return {
       message: 'product created',
-      data: this.productService.create(payload),
+      data: await this.productService.create(payload),
     };
   }
   @Put('/:id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateProductDto,
   ) {
     return {
       message: 'Product updated',
-      data: this.productService.update(id, payload),
+      data: await this.productService.update(id, payload),
     };
   }
   @Delete('/:id')
-  delete(@Param('id', CustomParseIntPipe) id: number) {
-    this.productService.delete(id);
+  async delete(@Param('id', CustomParseIntPipe) id: number) {
+    await this.productService.delete(id);
     return {
       message: 'Product deleted',
     };
