@@ -1,6 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Public } from './auth/decorators/public.decorator';
+import { ApiKeyGuard } from './auth/guards/api-key.guard';
 
+@UseGuards(ApiKeyGuard)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -13,6 +16,7 @@ export class AppController {
   getNuevo(): string {
     return '<h1>Hola Mundo</h1>';
   }
+  @Public()
   @Get('/ruta/')
   getRuta(): string {
     return '<h1>Holas nest</h1>';
