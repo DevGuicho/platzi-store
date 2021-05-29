@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { Expose } from 'class-transformer';
 import {
   CreateDateColumn,
   Entity,
@@ -14,6 +15,7 @@ import { OrderItem } from './order-item.entity';
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
+
   @CreateDateColumn({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
@@ -34,4 +36,30 @@ export class Order {
 
   @OneToMany(() => OrderItem, (item) => item.order)
   items: OrderItem[];
+
+  @Expose()
+  get products() {
+    if (this.items) {
+      return this.items
+        .filter((item) => !!item)
+        .map((item) => ({
+          ...item.product,
+          quantity: item.quantity,
+          itemId: item.id,
+        }));
+    }
+    return [];
+  }
+  @Expose()
+  get total() {
+    if (this.items) {
+      return this.items
+        .filter((item) => !!item)
+        .reduce((total, item) => {
+          const totalItem = item.product.price * item.quantity;
+          return total + totalItem;
+        }, 0);
+    }
+    return 0;
+  }
 }
