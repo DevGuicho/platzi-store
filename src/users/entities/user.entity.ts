@@ -26,6 +26,7 @@ export class User {
   role: string;
 
   @CreateDateColumn({
+    name: 'create_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     precision: null,
@@ -33,6 +34,7 @@ export class User {
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'update_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
@@ -41,6 +43,6 @@ export class User {
   updatedAt: Date;
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn()
+  @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 }
