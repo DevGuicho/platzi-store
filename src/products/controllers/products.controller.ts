@@ -10,6 +10,7 @@ import {
   Put,
   Query,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from 'src/products/services/products.service';
 import { CustomParseIntPipe } from 'src/common/parse-int.pipe';
@@ -19,11 +20,14 @@ import {
   UpdateProductDto,
 } from 'src/products/dtos/products.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
+
   @Get()
   @ApiOperation({ summary: 'List of products' })
   async getProducts(@Query() params: FilterProductsDto) {
@@ -32,6 +36,7 @@ export class ProductsController {
       data: await this.productService.findAll(params),
     };
   }
+
   @Get('/:id')
   @HttpCode(HttpStatus.ACCEPTED)
   async getProduct(@Param('id', ParseIntPipe) id: number) {

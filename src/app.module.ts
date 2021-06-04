@@ -25,6 +25,7 @@ import config from './config';
         API_KEY: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         DB_PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
