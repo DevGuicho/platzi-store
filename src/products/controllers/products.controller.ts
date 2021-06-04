@@ -20,14 +20,16 @@ import {
   UpdateProductDto,
 } from 'src/products/dtos/products.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'List of products' })
   async getProducts(@Query() params: FilterProductsDto) {
@@ -37,6 +39,7 @@ export class ProductsController {
     };
   }
 
+  @Public()
   @Get('/:id')
   @HttpCode(HttpStatus.ACCEPTED)
   async getProduct(@Param('id', ParseIntPipe) id: number) {
